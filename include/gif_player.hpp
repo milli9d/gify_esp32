@@ -5,6 +5,16 @@
  * This file contains the definition of the gif_player class, which provides
  * an interface for managing and playing GIF animations.
  */
+#include <stdio.h>
+#include <stdint.h>
+
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
+#include <SPI.h>
+#include <AnimatedGIF.h>
 
 namespace gify {
 
@@ -32,11 +42,8 @@ namespace gify {
 #define HSPI_SCLK  TFT_SCLK
 #define HSPI_SS    TFT_CS
 
-#define SPI_SPEED  50 * 1000 * 1000
-
-#define FRAME_RATE 18u
-// #define FRAME_RATE 30u
-// #define FRAME_RATE 60u
+#define SPI_SPEED  100 * 1000 * 1000
+#define FRAME_RATE 24u
 
 #define TFT_W      172
 #define TFT_H      320
@@ -54,8 +61,15 @@ class gif_player
 {
   private:
     // Private members for internal use.
+    TaskHandle_t _tid;
+
+    struct {
+        Adafruit_ST7789* dev;
+        SPIClass* spi;
+    } _tft;
 
     static void _run(void* args);
+    int32_t _tft_init();
 
   public:
     /**
