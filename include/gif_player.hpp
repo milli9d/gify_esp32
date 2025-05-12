@@ -42,12 +42,14 @@ namespace gify {
 #define HSPI_SCLK  TFT_SCLK
 #define HSPI_SS    TFT_CS
 
-#define SPI_SPEED  100 * 1000 * 1000
-#define FRAME_RATE 24u
+#define SPI_SPEED  100u * 1000u * 1000u
+#define FRAME_RATE 18u
 
 #define TFT_W      172
 #define TFT_H      320
 #define BPP_COOKED 2u
+
+// #define BENCHMARK
 
 /**
  * @class gif_player

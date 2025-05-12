@@ -96,6 +96,17 @@ void gif_player::_run(void* args)
                 tft.setAddrWindow(0, 0, TFT_W, TFT_H);
                 tft.writePixels(current_frame, (TFT_W * TFT_H), false, true);
                 tft.endWrite();
+                count++;
+
+#ifdef BENCHMARK
+                // count average frames per second
+                uint64_t elapsed_time_us = micros() - start_time_us;
+                if (elapsed_time_us > 0) {
+                    uint64_t fps = 1000000u / elapsed_time_us;
+                    printf("Frame %d: %d us, %lu fps\n", count, elapsed_time_us, fps);
+                }
+                continue;
+#endif
 
                 // make things run at proper frame rate
                 if (micros() - start_time_us > avg_frame_delay_us) {
